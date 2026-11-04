@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bright Smile Dental</title>
+<meta name="description" content="Family dental clinic demo with an AI voice receptionist.">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/* ponytail: one static page, no build step; Vapi SDK via esm.sh pinned */
+:root{--ink:#10212b;--muted:#566872;--bg:#f4f8f9;--card:#ffffff;--line:#dce6e9;--accent:#0b7285;--accent-ink:#f2fbfc;--accent-soft:#e3f2f5;--ok:#2b8a3e;--warn:#c92a2a}
+*{margin:0;box-sizing:border-box}
+[hidden]{display:none!important}
+body{font-family:Geist,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.01em}
+.brand i{color:var(--accent);font-size:26px}
+.navlinks{display:flex;gap:28px;font-size:15px;color:var(--muted)}
+.navlinks a{text-decoration:none}
+.navlinks a:hover{color:var(--ink)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:56px;padding-bottom:72px}
+h1{font-size:clamp(38px,5vw,58px);line-height:1.05;letter-spacing:-.035em;font-weight:700}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{margin-top:20px;font-size:19px;color:var(--muted);max-width:30em}
+.cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:12px;font:600 16px Geist,sans-serif;padding:14px 20px;cursor:pointer;transition:transform .15s,background .2s,box-shadow .2s;text-decoration:none;white-space:nowrap}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 24px rgb(11 114 133/.25)}
+.btn-primary:hover{background:#095f6e}
+.btn-ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:#b8cbd0}
+.btn:focus-visible{outline:3px solid #66c2d1;outline-offset:2px}
+.facts{margin-top:34px;display:flex;gap:28px;flex-wrap:wrap;font-size:15px;color:var(--muted)}
+.facts span{display:flex;align-items:center;gap:8px}
+.facts i{color:var(--accent);font-size:19px}
+
+/* call panel */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 30px 70px rgb(16 60 72/.12);overflow:hidden}
+.panel-head{display:flex;align-items:center;gap:14px;padding:20px 22px;border-bottom:1px solid var(--line)}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:28px;position:relative}
+.avatar::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--accent);opacity:0;transform:scale(calc(1 + var(--vol,0)*.35));transition:transform .08s linear,opacity .2s}
+.panel.live .avatar::after{opacity:.55}
+.who b{display:block;font-size:17px}
+.who span{font-size:14px;color:var(--muted)}
+.status{margin-left:auto;font-size:13px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.panel.live .status{background:#e6f4ea;color:var(--ok)}
+.panel.err .status{background:#fdecec;color:var(--warn)}
+.log{height:300px;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.empty{margin:auto;text-align:center;color:var(--muted);font-size:15px;max-width:22em}
+.empty i{display:block;font-size:34px;color:#9bb3b9;margin-bottom:10px}
+.msg{max-width:85%;font-size:15px;padding:10px 14px;border-radius:16px;animation:in .25s ease-out}
+.msg.assistant{background:var(--accent-soft);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.user{background:var(--accent);color:var(--accent-ink);align-self:flex-end;border-bottom-right-radius:5px}
+.msg.partial{opacity:.6}
+.sysnote{align-self:center;margin-top:6px;font-size:13px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:6px 14px;animation:in .25s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel-foot{display:flex;gap:10px;padding:16px 22px 20px;border-top:1px solid var(--line);background:#fafcfc}
+.panel-foot .btn{flex:1;justify-content:center}
+.btn-stop{background:#fdecec;color:var(--warn)}
+#mute{flex:0 0 auto;min-width:132px}
+#mute.muted{background:#fff4e6;border-color:#ffd8a8;color:#a64b00}
+.panel.muted .status{background:#fff4e6;color:#a64b00}.note{padding:0 22px 18px;font-size:12.5px;color:var(--muted);background:#fafcfc}
+
+/* sections */
+section.block{padding:72px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(28px,3.4vw,38px);letter-spacing:-.025em;line-height:1.1}
+.lead{margin-top:12px;color:var(--muted);max-width:40em;font-size:17px}
+.services{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.svc.big{grid-column:span 2;background:var(--accent);color:var(--accent-ink);border:0}
+.svc i{font-size:26px;color:var(--accent)}
+.svc.big i{color:var(--accent-ink)}
+.svc h3{margin-top:12px;font-size:18px}
+.svc p{margin-top:4px;font-size:15px;color:var(--muted)}
+.svc.big p{color:#cde9ee}
+.price{margin-top:12px;font-weight:700;font-size:17px}
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:30px}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;font-size:16px}
+.hours b{font-weight:600}
+.addr{font-size:16px;color:var(--muted)}
+.addr strong{color:var(--ink);display:block;font-size:18px;margin-bottom:6px}
+footer{padding:30px 0 40px;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+
+@media (max-width:860px){
+  .navlinks{display:none}
+  .hero{grid-template-columns:1fr;gap:36px;padding-top:28px;padding-bottom:48px}
+  .services{grid-template-columns:1fr}
+  .svc.big{grid-column:auto}
+  .visit{grid-template-columns:1fr;gap:28px}
+  .log{height:260px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <nav aria-label="Main navigation">
+    <div class="brand"><i class="ph-fill ph-tooth"></i>Bright Smile Dental</div>
+    <div class="navlinks"><a href="#services">Services</a><a href="#visit">Visit us</a><a href="#talk">Talk to Maya</a></div>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap hero" aria-labelledby="hero-heading">
+    <div>
+      <h1 id="hero-heading">Gentle dental care, <em>booked in one call</em></h1>
+      <p class="sub">Ask Maya, our AI receptionist, about prices or opening hours, or book a visit. She answers day and night.</p>
+      <div class="cta">
+        <button class="btn btn-primary" id="talk"><i class="ph-fill ph-microphone"></i>Talk to Maya</button>
+        <a class="btn btn-ghost" href="#services"><i class="ph ph-list-bullets"></i>See prices</a>
+      </div>
+      <div class="facts">
+        <span><i class="ph ph-clock"></i>Open 6 days a week</span>
+        <span><i class="ph ph-users-three"></i>New patients welcome</span>
+        <span><i class="ph ph-car"></i>Free parking</span>
+      </div>
+    </div>
+
+    <div class="panel" id="panel" aria-live="polite">
+      <div class="panel-head">
+        <div class="avatar" id="avatar"><i class="ph-fill ph-headset"></i></div>
+        <div class="who"><b>Maya</b><span>AI receptionist</span></div>
+        <div class="status" id="status">Ready</div>
+      </div>
+      <div class="log" id="log">
+        <div class="empty" id="empty"><i class="ph ph-waveform"></i>Click "Talk to Maya" and allow the microphone. Try asking: "How much is teeth whitening?" or "Can I book a check-up on Saturday?"</div>
+      </div>
+      <div class="panel-foot">
+        <button class="btn btn-primary" id="start"><i class="ph-fill ph-phone-call"></i>Start call</button>
+        <button class="btn btn-ghost" id="mute" hidden aria-pressed="false"><i class="ph-fill ph-microphone"></i><span>Mute</span></button>
+        <button class="btn btn-stop" id="stop" hidden><i class="ph-fill ph-phone-x"></i>End call</button>
+      </div>
+      <p class="note">Demo clinic. Maya is an AI assistant; calls may be logged to improve the demo.</p>
+    </div>
+  </section>
+
+  <section class="block" id="services" aria-labelledby="svc-heading">
+    <div class="wrap">
+      <h2 id="svc-heading">Services and prices</h2>
+      <p class="lead">Clear starting prices. Your dentist confirms the final plan before any treatment.</p>
+      <div class="services">
+        <div class="svc big"><i class="ph ph-sparkle"></i><h3>Teeth whitening</h3><p>Professional in-clinic whitening, about one hour.</p><div class="price">$199</div></div>
+        <div class="svc"><i class="ph ph-tooth"></i><h3>Check-up and cleaning</h3><p>Exam, cleaning and advice.</p><div class="price">$89</div></div>
+        <div class="svc"><i class="ph ph-baby"></i><h3>Kids' check-up</h3><p>Friendly visits for children.</p><div class="price">$59</div></div>
+        <div class="svc"><i class="ph ph-first-aid-kit"></i><h3>Emergency visit</h3><p>Same-day pain relief when available.</p><div class="price">$99</div></div>
+        <div class="svc"><i class="ph ph-shield-check"></i><h3>Fillings and root canals</h3><p>Fillings from $120, root canals from $650 after an exam.</p><div class="price">From $120</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="visit" aria-labelledby="visit-heading">
+    <div class="wrap">
+      <h2 id="visit-heading">Visit us</h2>
+      <div class="visit">
+        <div class="hours">
+          <b>Monday to Friday</b><span>9 a.m. to 6 p.m.</span>
+          <b>Saturday</b><span>9 a.m. to 1 p.m.</span>
+          <b>Sunday</b><span>Closed</span>
+        </div>
+        <div class="addr"><strong>214 Maple Avenue, Springfield</strong>Free parking behind the building. Most major insurance accepted; we confirm your coverage before the visit.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Bright Smile Dental is a demo business. Website and AI receptionist built by Md Asif Husain.</div></footer>
+
+<script type="module">
+import Vapi from "https://esm.sh/@vapi-ai/web@3.0.0";
+import { VAPI_PUBLIC_KEY, ASSISTANT_ID } from "./config.js";
+
+const $ = id => document.getElementById(id);
+const panel = $("panel"), log = $("log"), status = $("status");
+const vapi = new Vapi(VAPI_PUBLIC_KEY);
+let partial = null;
+
+const setState = (cls, text) => { panel.classList.remove("live", "err"); if (cls) panel.classList.add(cls); status.textContent = text; };
+const add = (role, text, isPartial) => {
+  $("empty")?.remove();
+  const last = log.lastElementChild;
+  if (partial && partial.dataset.role === role) { partial.textContent = (partial.dataset.base || "") + text; if (!isPartial) { partial.classList.remove("partial"); delete partial.dataset.base; partial = null; } }
+  else if (last?.classList.contains("msg") && last.dataset.role === role) { // same speaker keeps talking: extend the bubble
+    last.dataset.base = last.textContent + " "; last.textContent = last.dataset.base + text;
+    if (isPartial) { last.classList.add("partial"); partial = last; } else delete last.dataset.base;
+  }
+  else { const el = document.createElement("div"); el.className = `msg ${role}${isPartial ? " partial" : ""}`; el.dataset.role = role; el.textContent = text; log.append(el); if (isPartial) partial = el; }
+  log.scrollTop = log.scrollHeight;
+};
+
+const note = text => { const el = document.createElement("div"); el.className = "sysnote"; el.textContent = text; log.append(el); log.scrollTop = log.scrollHeight; };
+
+async function start() {
+  log.replaceChildren(); partial = null; // fresh conversation for each call
+  setState(null, "Connecting...");
+  $("start").disabled = true;
+  try { await vapi.start(ASSISTANT_ID); }
+  catch (e) { setState("err", "Could not connect"); $("start").disabled = false; console.error(e); }
+}
+$("start").onclick = start;
+$("talk").onclick = () => { $("panel").scrollIntoView({ behavior: "smooth", block: "center" }); start(); };
+$("stop").onclick = () => vapi.stop();
+const setMuteUi = on => {
+  const b = $("mute"); b.setAttribute("aria-pressed", on); b.classList.toggle("muted", on); panel.classList.toggle("muted", on);
+  b.querySelector("i").className = on ? "ph-fill ph-microphone-slash" : "ph-fill ph-microphone";
+  b.querySelector("span").textContent = on ? "Unmute" : "Mute";
+  if (panel.classList.contains("live")) status.textContent = on ? "Muted" : "Live";
+};
+$("mute").onclick = () => { const on = !vapi.isMuted(); vapi.setMuted(on); setMuteUi(on); };
+
+vapi.on("call-start", () => { setState("live", "Live"); $("start").hidden = true; $("stop").hidden = false; $("mute").hidden = false; });
+vapi.on("call-end", () => { partial?.classList.remove("partial"); partial = null; note("Call ended. Thanks for calling Bright Smile Dental."); setState(null, "Call ended"); $("start").hidden = false; $("start").disabled = false; $("stop").hidden = true; $("mute").hidden = true; setMuteUi(false); panel.style.setProperty("--vol", 0); });
+vapi.on("volume-level", v => panel.style.setProperty("--vol", v));
+vapi.on("message", m => { if (m.type === "transcript") add(m.role === "assistant" ? "assistant" : "user", m.transcript, m.transcriptType === "partial"); });
+vapi.on("error", e => { setState("err", "Error"); console.error(e); $("start").disabled = false; });
+</script>
+</body>
+</html>
