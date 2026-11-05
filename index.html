@@ -63,7 +63,7 @@ h1 em{font-style:normal;color:var(--accent)}
 .btn-stop{background:#fdecec;color:var(--warn)}
 #mute{flex:0 0 auto;min-width:132px}
 #mute.muted{background:#fff4e6;border-color:#ffd8a8;color:#a64b00}
-.panel.muted .status{background:#fff4e6;color:#a64b00}.note{padding:0 22px 18px;font-size:12.5px;color:var(--muted);background:#fafcfc}
+.panel.muted .status{background:#fff4e6;color:#a64b00}.facts a,.note a,.addr a{color:var(--accent);font-weight:600;white-space:nowrap;text-decoration:none}.facts a:hover,.note a:hover,.addr a:hover{text-decoration:underline}.note{padding:0 22px 18px;font-size:12.5px;color:var(--muted);background:#fafcfc}
 
 /* sections */
 section.block{padding:72px 0;border-top:1px solid var(--line)}
@@ -108,14 +108,14 @@ footer{padding:30px 0 40px;font-size:14px;color:var(--muted);border-top:1px soli
   <section class="wrap hero" aria-labelledby="hero-heading">
     <div>
       <h1 id="hero-heading">Gentle dental care, <em>booked in one call</em></h1>
-      <p class="sub">Ask Maya, our AI receptionist, about prices or opening hours, or book a visit. She answers day and night.</p>
+      <p class="sub">Ask Maya, our AI receptionist, about prices or opening hours, or book a visit. She answers here or by phone, day and night.</p>
       <div class="cta">
         <button class="btn btn-primary" id="talk"><i class="ph-fill ph-microphone"></i>Talk to Maya</button>
         <a class="btn btn-ghost" href="#services"><i class="ph ph-list-bullets"></i>See prices</a>
       </div>
       <div class="facts">
         <span><i class="ph ph-clock"></i>Open 6 days a week</span>
-        <span><i class="ph ph-users-three"></i>New patients welcome</span>
+        <span><i class="ph ph-phone"></i>Call Maya: <a href="tel:+13076244118">+1 (307) 624-4118</a></span>
         <span><i class="ph ph-car"></i>Free parking</span>
       </div>
     </div>
@@ -134,7 +134,7 @@ footer{padding:30px 0 40px;font-size:14px;color:var(--muted);border-top:1px soli
         <button class="btn btn-ghost" id="mute" hidden aria-pressed="false"><i class="ph-fill ph-microphone"></i><span>Mute</span></button>
         <button class="btn btn-stop" id="stop" hidden><i class="ph-fill ph-phone-x"></i>End call</button>
       </div>
-      <p class="note">Demo clinic. Maya is an AI assistant; calls may be logged to improve the demo.</p>
+      <p class="note">Prefer the phone? Maya also answers <a href="tel:+13076244118">+1 (307) 624-4118</a>. Demo clinic: Maya is an AI assistant and calls may be logged.</p>
     </div>
   </section>
 
@@ -161,7 +161,7 @@ footer{padding:30px 0 40px;font-size:14px;color:var(--muted);border-top:1px soli
           <b>Saturday</b><span>9 a.m. to 1 p.m.</span>
           <b>Sunday</b><span>Closed</span>
         </div>
-        <div class="addr"><strong>214 Maple Avenue, Springfield</strong>Free parking behind the building. Most major insurance accepted; we confirm your coverage before the visit.</div>
+        <div class="addr"><strong>214 Maple Avenue, Springfield</strong>Phone: <a href="tel:+13076244118">+1 (307) 624-4118</a><br>Free parking behind the building. Most major insurance accepted; we confirm your coverage before the visit.</div>
       </div>
     </div>
   </section>
